@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head> <title>{% block title %}Where in the World are Karlexandra?{% endblock %}</title> </head>
+{% load static from staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}" />
+<body>
+    <div id="sidebar">{% block sidebar %} {% endblock %}</div>
+    <div id="container">
+        <div id="menu">
+            {% block nav-global %}
+                <!-- MENU -->
+                <div id="title"><h3><a href="{% url blog.views.main %}">Karlexandra</a></h3></div>
+                {% if user.is_authenticated %}
+                    <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!</span>
+                    <span><a class="m-item" href="{% url admin:index %}">Admin</a></span>
+                    <span><a class="m-item" href="{% url admin:blog_post_add %}">Add post</a></span>
+                {% else %}
+                    <span><a class="m-item" href="{% url admin:index %}">Login</a></span>
+                {% endif%}
+                {% if user.is_staff %}
+                    <span>You're a staffmember. Noice.</span>
+                {% endif %}
+            {% endblock %}
+        </div>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

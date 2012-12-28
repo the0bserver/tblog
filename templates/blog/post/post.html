@@ -1,0 +1,34 @@
+{% extends "blog/bbase.html" %}
+
+{% block content %}
+    <div class="main">
+        <!-- Post  -->
+        <div class="p-title">{{ post.title }}</div>
+        <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on     {{ post.created }}</div>
+        <ul>
+            <div class="p-body">{{ post.body|linebreaks }}</div>
+        </ul>
+    </div>
+<!-- Comments  -->
+    {% if comments %}
+         <p>Comments:</p>
+    {% endif %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <div class="time">{{ comment.created }} | {{ comment.author }}</div>
+            <div class="body">{{ comment.body|linebreaks }}</div>
+        </div>
+    {% endfor %}
+
+    <div id="addc">Got something to say? Add a comment below:</div>
+    <!-- Comment form  -->
+    <form action="{% url blog.views.add_comment post.id %}" method="POST">
+        {% csrf_token %} 
+        <div id="cform">
+            Name: {{ form.author }}
+            <p>{{ form.body|linebreaks }}</p>
+        </div>
+        <div id="submit"><input type="submit" value="Submit Comment"></div>
+    </form>
+{% endblock %}
