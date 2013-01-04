@@ -7,6 +7,12 @@
         <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on     {{ post.created }}</div>
         <ul>
             <div class="p-body">{{ post.body|linebreaks }}</div>
+            <div class="p-photos">
+            {% for photo in photos %}
+                <span class="thumb"><a href="{{ media_url }}{{ photo.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ photo.thumb.name }}" /></a>
+                <span class="caption">{{ photo.caption }}</span></span>
+            {% endfor %}
+            </div>
         </ul>
     </div>
 <!-- Comments  -->

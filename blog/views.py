@@ -7,13 +7,12 @@ from django.forms import ModelForm
 from blog.models import *
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
-
+from mysite.settings import MEDIA_URL
 
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
         exclude = ["post"]
-
 
 def main(request):
     """Main listing."""
@@ -28,7 +27,7 @@ def main(request):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
-    post_list=posts.object_list, months=mkmonth_lst()))
+    post_list=posts.object_list, months=mkmonth_lst(), media_url=MEDIA_URL))
 
 
 def add_comment(request, pk):
@@ -48,14 +47,14 @@ def add_comment(request, pk):
         comment.save()
     return HttpResponseRedirect(reverse("blog.views.post", args=[pk]))
 
-
 def post(request, pk):
     """Single post with comments and a comment form."""
     post = Post.objects.get(pk=int(pk))
+    photos = post.photos.all()
     comments = Comment.objects.filter(post=post)
-    d = dict(post=post, comments=comments, form=CommentForm(), user=request.user)
-    return render_to_response("blog/post/post.html", d, context_instance=RequestContext(request))
+    d = dict(post=post, comments=comments, form=CommentForm(), photos=photos, media_url=MEDIA_URL, user=request.user)
 
+    return render_to_response("blog/post/post.html", d, context_instance=RequestContext(request))
 
 def mkmonth_lst():
     """Make a list of months to show archive links."""

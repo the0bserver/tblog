@@ -21,6 +21,10 @@
                 <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
                 <ul>
                     <div class="p-body">{{ post.body|linebreaks }}</div>
+                    {%for photo in photos %}
+                        <div class="p-photo"><img src="{{ media_url }}{{ photo.name }}"></img></div>
+                    {% endfor %}
+                    </div>
                     <div class="c-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div> 
                 </ul>
             {% endfor %}
