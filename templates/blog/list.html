@@ -14,19 +14,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main">
+    <div id="main">
         <!-- Posts  -->
             {% for post in posts.object_list %}
                 <div class="p-title"><a href="{% url blog.views.post post.pk %}">{{ post.title }}</a></div>
                 <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
-                <ul>
+                <div class="post">
+                    {% with post.photos.all|first as photo %}
+                        <div class="p-photo"><img src="{{ media_url }}{{ photo.thumb.name }}"></img></div>
+                    {% endwith %}
                     <div class="p-body">{{ post.body|linebreaks }}</div>
-                    {%for photo in photos %}
-                        <div class="p-photo"><img src="{{ media_url }}{{ photo.name }}"></img></div>
-                    {% endfor %}
-                    </div>
-                    <div class="c-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div> 
-                </ul>
+                    <div class="p-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div> 
+                </div>
+                <div class="clear"></div>
             {% endfor %}
         <!-- Next/Prev page links  -->
         {% if not archive and posts.object_list and posts.paginator.num_pages > 1 %}

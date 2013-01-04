@@ -29,7 +29,6 @@ def main(request):
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
     post_list=posts.object_list, months=mkmonth_lst(), media_url=MEDIA_URL))
 
-
 def add_comment(request, pk):
     """Add a new comment."""
     p = request.POST

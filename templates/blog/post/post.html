@@ -1,19 +1,21 @@
 {% extends "blog/bbase.html" %}
-
 {% block content %}
     <div class="main">
         <!-- Post  -->
         <div class="p-title">{{ post.title }}</div>
         <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on     {{ post.created }}</div>
-        <ul>
-            <div class="p-body">{{ post.body|linebreaks }}</div>
-            <div class="p-photos">
-            {% for photo in photos %}
-                <span class="thumb"><a href="{{ media_url }}{{ photo.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ photo.thumb.name }}" /></a>
-                <span class="caption">{{ photo.caption }}</span></span>
-            {% endfor %}
+        <div class="p-body">{{ post.body|linebreaks }}</div>
+        <div class="p-photos">
+        {% for photo in photos %}
+            <div class="thumb"><div class="timg"><a class="cbthumb" title="{{ photo.caption }}" href="{{ media_url }}{{ photo.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ photo.thumb.name }}" /></a></div>
+            <div class="caption">{{ photo.caption }}</div>
             </div>
-        </ul>
+        {% endfor %}
+         <script>
+            $(document).ready(function() {
+                $('.cbthumb').colorbox({rel:'cbthumb'});
+            });
+         </script>
     </div>
 <!-- Comments  -->
     {% if comments %}

@@ -20,8 +20,8 @@ class Photo(models.Model):
     caption = models.CharField(max_length=100)
     tags = models.ManyToManyField(Tag, blank=True)
     user = models.ForeignKey(User)
-    image = models.ImageField(upload_to='photo')
-    thumb = models.ImageField(upload_to="images/", blank=True, null=True)
+    image = models.ImageField(upload_to='media/images/')
+    thumb = models.ImageField(upload_to='media/images/', blank=True, null=True)
     # thumb2 = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -91,6 +91,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     search_fields = ["title"]
+    display_fields = ["title"]
     exclude = ('user',)
     def save_model(self, request, obj, form, change): 
         if self.model == Post:
@@ -106,7 +107,7 @@ class PostAdmin(admin.ModelAdmin):
             formset.save()
 
 class CommentAdmin(admin.ModelAdmin):
-    display_fields = ["post", "author", "created"]
+    list_display = ["post", "author", "created"]
 
 class PhotoAdmin(admin.ModelAdmin):
     exclude = ('user','thumb',)
