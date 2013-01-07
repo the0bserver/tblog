@@ -13,7 +13,7 @@
         <div id="menu">
             {% block nav-global %}
                 <!-- MENU -->
-                <div id="title"><h3><a href="{% url blog.views.main %}">Karlexandra</a></h3></div>
+                <div><a id="logo" href="{% url blog.views.main %}"></a></div>
                 {% if user.is_authenticated %}
                     <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!</span>
                     <span><a class="m-item" href="{% url admin:index %}">Admin</a></span>
@@ -27,7 +27,11 @@
             {% endblock %}
         </div>
         <div id="content">
+            {% if user.is_authenticated %}
             {% block content %}{% endblock %}
+            {% else %}
+                <p>As KarlexandrA is currently under construction, you need to be logged in to view content. User accounts are currently restricted until the site is launched. If you are one of the lucky few, please log into the admin interface above...</p>
+            {% endif %}
         </div>
     </div>
 </body>

@@ -75,6 +75,9 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
 
+    def preview(self):
+        return unicode("%s" % (self.body[:500]))
+
 class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=60)

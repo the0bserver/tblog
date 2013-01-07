@@ -17,15 +17,15 @@
     <div id="main">
         <!-- Posts  -->
             {% for post in posts.object_list %}
-                <div class="p-title"><a href="{% url blog.views.post post.pk %}">{{ post.title }}</a></div>
-                <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
-                <div class="post">
+            <div class="post">
+                <div class="title"><a href="{% url blog.views.post post.pk %}">{{ post.title }}</a></div>
+                <div class="author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
                     {% with post.photos.all|first as photo %}
-                        <div class="p-photo"><img src="{{ media_url }}{{ photo.thumb.name }}"></img></div>
+                        <div class="thumb"><img src="{{ media_url }}{{ photo.thumb.name }}"></img></div>
                     {% endwith %}
-                    <div class="p-body">{{ post.body|linebreaks }}</div>
-                    <div class="p-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div> 
-                </div>
+                <div class="p-body"><p>{% if post.body|length > 500 %}{{ post.preview }}... <a class="body-link" href="{% url blog.views.post post.pk %}">continue reading ></a>{% else %}{{ post.body }}{% endif %}</p></div>
+                    <div class="p-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div>
+        </div>
                 <div class="clear"></div>
             {% endfor %}
         <!-- Next/Prev page links  -->

@@ -4,6 +4,13 @@ body {
     font-size: 12px;
 }
 
+#logo {
+    background:url("/static/image/sprites.png") no-repeat scroll 0 -41px transparent;
+    height:50px;
+    width:320px;
+    display:inline-block;
+}
+
 #content {
     width:1000px;
     margin-left:auto;
@@ -12,10 +19,6 @@ body {
 
 .clear {
     clear:both;
-}
-
-#main {
-    padding-top:10px;
 }
 
 #menu {
@@ -30,24 +33,27 @@ body {
     width:100%;
 }
 
-.p-title {
+.title {
     font-size:20px;
-    margin-bottom:5px;
+    margin:10px 0;
 }
 
-.p-title a {
+.title a {
     text-decoration:none;
     font-size: 20px;
 }
 
-.p-author ul{
+.author ul{
     margin-left:10px;
 }
 
-.p-photo {
+.thumb {
     float:left;
     width:128px;
-    margin-top:10px;
+    margin:10px 10px 10px 0;
+    text-align:center;
+    display:inline-block;
+    vertical-align:middle;
 }
 
 .p-link {
@@ -58,19 +64,10 @@ body {
 
 }
 
-.thumb {
-    position:relative;
-    display:inline-block;
-    margin-left:5px;
-    margin-right:5px;
-    vertical-align:middle;
-    width:128px;
-}
-
 .timg {
     text-align:center;
-    height:128px;
     vertical-align:middle;
+    margin-bottom:10px;
 }
 
 .caption {
@@ -83,4 +80,8 @@ body {
 
 .pubdate {
 
+}
+
+#comment-drawer {
+    display:none;
 }
