@@ -11,17 +11,17 @@ from os.path import join as pjoin
 from tempfile import *
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     def __unicode__(self):
-        return self.tag
+        return self.name
 
 class Photo(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     caption = models.CharField(max_length=100)
     tags = models.ManyToManyField(Tag, blank=True)
     user = models.ForeignKey(User)
-    image = models.ImageField(upload_to='media/images/')
-    thumb = models.ImageField(upload_to='media/images/', blank=True, null=True)
+    image = models.ImageField(upload_to='media/images/%Y/%m/%d')
+    thumb = models.ImageField(upload_to='media/images/%Y/%m/%d', blank=True, null=True)
     # thumb2 = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -90,7 +90,7 @@ class Comment(models.Model):
 ### Admin classes
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ["tag"]
+    list_display = ["name"]
 
 class PostAdmin(admin.ModelAdmin):
     search_fields = ["title"]

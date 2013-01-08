@@ -27,7 +27,7 @@ def main(request):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
-    post_list=posts.object_list, months=mkmonth_lst(), media_url=MEDIA_URL))
+    months=mkmonth_lst(), media_url=MEDIA_URL))
 
 def add_comment(request, pk):
     """Add a new comment."""
@@ -52,7 +52,6 @@ def post(request, pk):
     photos = post.photos.all()
     comments = Comment.objects.filter(post=post)
     d = dict(post=post, comments=comments, form=CommentForm(), photos=photos, media_url=MEDIA_URL, user=request.user)
-
     return render_to_response("blog/post/post.html", d, context_instance=RequestContext(request))
 
 def mkmonth_lst():
@@ -80,9 +79,23 @@ def mkmonth_lst():
 def month(request, year, month):
     """Monthly archive."""
     posts = Post.objects.filter(created__year=year, created__month=month)
-    return render_to_response("blog/list.html", dict(post_list=posts, user=request.user,
+    return render_to_response("blog/list.html", dict(posts=posts, user=request.user,
                                                 months=mkmonth_lst(), archive=True))
 
+def tag_list(request, tag):
+    """List posts which have a given tag"""
+    posts = Post.objects.filter(tags__name=tag).order_by("-created")
+    paginator = Paginator(posts, 5)
+
+    try: page = int(request.GET.get("page", '1'))
+    except ValueError: page = 1
+    
+    try:
+        posts = paginator.page(page)
+    except (InvalidPage, EmptyPage):
+        posts = paginator.page(paginator.num_pages)
+    return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
+    months=mkmonth_lst(), media_url=MEDIA_URL))
 
 def delete_comment(request, post_pk, pk=None):
     """Delete comment(s) with primary key `pk` or with pks in POST."""

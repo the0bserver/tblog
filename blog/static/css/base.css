@@ -4,11 +4,38 @@ body {
     font-size: 12px;
 }
 
-#logo {
+#menu {
+    border-bottom:1px solid #B2AFA9;
+    display:block;
+    position:fixed;
+    background-color:white;
+    width:100%;
+    top:0px;
+    height:100px;
+}
+
+.m-item {
+    height:20px;
+    display:inline-block;
+}
+
+#logo a {
     background:url("/static/image/sprites.png") no-repeat scroll 0 -41px transparent;
     height:50px;
     width:320px;
     display:inline-block;
+}
+
+#logo a:hover, #logo a:active, #logo a:hover {
+    background-position:0 -131px;
+}
+
+#logged-out {
+    padding-top:10px;
+}
+
+#container {
+    margin-top:100px;
 }
 
 #content {
@@ -21,26 +48,69 @@ body {
     clear:both;
 }
 
-#menu {
-    border-bottom:1px solid gray;
+#login-link a {
+    background:url("/static/image/sprites.png") no-repeat scroll -53px -22px transparent;
+    width:50px;
+}
+
+#login-link a:hover, #login-link a:active, #login-link a:focus  {
+    background-position:-53px -112px;
+}
+
+#admin-link a {
+    background:url("/static/image/sprites.png") no-repeat scroll 0 -22px transparent;
+    width:55px;
+}
+
+#admin-link a:hover, #admin-link a:active, #admin-link a:focus {
+    background-position:0 -112px;
+}
+
+#new-post-link a {
+    background:url("/static/image/sprites.png") no-repeat scroll 0 -3px transparent;
+    width:75px;
+}
+
+#new-post-link a:hover, #new-post-link a:active, #new-post-link a:focus {
+    background-position:0 -93px;
+}
+
+#new-photo-link a {
+    background:url("/static/image/sprites.png") no-repeat scroll -77px -3px transparent;
+    width:85px;
+}
+
+#new-photo-link a:hover, #new-photo-link a:active, #new-photo-link a:focus {
+    background-position:-77px -93px;
+}
+
+#user {
+    display:block;
+    margin:5px 0 5px 5px;
 }
 
 .post {
     margin-bottom:10px;
     display:inline-block;
     padding-bottom:15px;
-    border-bottom:1px solid gray;
+    border-bottom:1px solid #B2AFA9;
     width:100%;
 }
 
 .title {
     font-size:20px;
     margin:10px 0;
+    height:20px;
 }
 
 .title a {
     text-decoration:none;
     font-size: 20px;
+    color:#5393DF;
+}
+
+.title a:hover, .title a:active, .title a:focus {
+    color:#CF1919;
 }
 
 .author ul{
@@ -54,6 +124,15 @@ body {
     text-align:center;
     display:inline-block;
     vertical-align:middle;
+}
+
+.body-link a {
+    text-decoration:none;
+    color:#5393DF;
+}
+
+.body-link a:hover, .body-link a:active, .body-link a:focus {
+    color:#CF1919;
 }
 
 .p-link {

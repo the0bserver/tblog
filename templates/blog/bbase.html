@@ -8,29 +8,28 @@
 <script type="text/javascript" src="{% static "script/jquery/jquery-1.8.3.js" %}"></script>
 <script type="text/javascript" src="{% static "script/jquery/colorbox-min.js" %}"></script>
 <body>
-    <div id="sidebar">{% block sidebar %} {% endblock %}</div>
     <div id="container">
+    <div id="sidebar">{% block sidebar %} {% endblock %}</div>
         <div id="menu">
             {% block nav-global %}
                 <!-- MENU -->
-                <div><a id="logo" href="{% url blog.views.main %}"></a></div>
+                <div id="logo"><a href="{% url blog.views.main %}"></a></div>
                 {% if user.is_authenticated %}
-                    <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!</span>
-                    <span><a class="m-item" href="{% url admin:index %}">Admin</a></span>
-                    <span><a class="m-item" href="{% url admin:blog_post_add %}">Add post</a></span>
+                    <span class="m-item" id="admin-link"><a class="m-item" href="{% url admin:index %}"></a></span>
+                    <span class="m-item" id="new-post-link"><a class="m-item" href="{% url admin:blog_post_add %}"></a></span>
+                    <span class="m-item" id="new-photo-link"><a class="m-item" href="{% url admin:blog_photo_add %}"></a></span>
+                    <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!{% if user.is_staff %} You're an Admin. Noice.{% endif %}</span>
                 {% else %}
-                    <span><a class="m-item" href="{% url admin:index %}">Login</a></span>
+                    <span class="m-item" id="login-link"><a class="m-item" href="{% url admin:index %}"></a></span>
                 {% endif%}
-                {% if user.is_staff %}
-                    <span>You're a staffmember. Noice.</span>
-                {% endif %}
             {% endblock %}
         </div>
         <div id="content">
             {% if user.is_authenticated %}
-            {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
             {% else %}
-                <p>As KarlexandrA is currently under construction, you need to be logged in to view content. User accounts are currently restricted until the site is launched. If you are one of the lucky few, please log into the admin interface above...</p>
+                <div id="logged-out"><h3>OH NAOOOO!</h3>
+                <p>As KarlexandrA is currently under construction, you need to be logged in to view content. User accounts are currently restricted until the site is launched. If you are one of the lucky few, please log into the admin interface above...</p></div>
             {% endif %}
         </div>
     </div>
