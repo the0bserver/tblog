@@ -8,15 +8,23 @@ from blog.models import *
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from mysite.settings import MEDIA_URL
+from django.db.models import Count
 
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
         exclude = ["post"]
 
-def main(request):
+def main(request, f_tag=None, year=None, month=None):
     """Main listing."""
-    posts = Post.objects.all().order_by("-created")
+    if f_tag:
+        posts = Post.objects.filter(tags__name=f_tag).order_by("-created")
+    elif year:
+        posts = Post.objects.filter(created__month=1, created__year=2013)
+    else:
+	    posts = Post.objects.all().order_by("-created")
+
+    tags = Tag.objects.all().annotate(num_posts=Count('post')).order_by('-num_posts')
     paginator = Paginator(posts, 5)
 
     try: page = int(request.GET.get("page", '1'))
@@ -27,7 +35,7 @@ def main(request):
     except (InvalidPage, EmptyPage):
         posts = paginator.page(paginator.num_pages)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
-    months=mkmonth_lst(), media_url=MEDIA_URL))
+    months=mkmonth_lst(), media_url=MEDIA_URL, f_tags=tags, f_tag=f_tag))
 
 def add_comment(request, pk):
     """Add a new comment."""
@@ -56,7 +64,6 @@ def post(request, pk):
 
 def mkmonth_lst():
     """Make a list of months to show archive links."""
-
     if not Post.objects.count(): return []
 
     # set up vars
@@ -81,22 +88,7 @@ def month(request, year, month):
     posts = Post.objects.filter(created__year=year, created__month=month)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user,
                                                 months=mkmonth_lst(), archive=True))
-
-def tag_list(request, tag):
-    """List posts which have a given tag"""
-    posts = Post.objects.filter(tags__name=tag).order_by("-created")
-    paginator = Paginator(posts, 5)
-
-    try: page = int(request.GET.get("page", '1'))
-    except ValueError: page = 1
-    
-    try:
-        posts = paginator.page(page)
-    except (InvalidPage, EmptyPage):
-        posts = paginator.page(paginator.num_pages)
-    return render_to_response("blog/list.html", dict(posts=posts, user=request.user, is_auth=request.user.is_authenticated(),
-    months=mkmonth_lst(), media_url=MEDIA_URL))
-
+												
 def delete_comment(request, post_pk, pk=None):
     """Delete comment(s) with primary key `pk` or with pks in POST."""
     if request.user.is_staff:

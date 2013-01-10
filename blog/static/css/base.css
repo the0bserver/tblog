@@ -1,8 +1,76 @@
+/*--------------------------------------------------------------------------------------------*/
+/*Base CSS classes for karlexandra.com travel blog*/
+
+div {
+    /*border:1px dotted red;*/
+}
+
+html{
+    height:100%;
+}
+
 body {
     background-color:#ffffff;
     font-family: Arial,Helvetica,sans-serif;
     font-size: 12px;
+	background:url("/static/image/background.png") repeat-y scroll left top;
+	height:100%;
+	margin:0;
 }
+
+#container {
+    min-height:100%;
+}
+
+#main {
+	width:100%;
+	padding-bottom:79px;
+}
+
+.clear {
+    clear:both;
+}
+
+/*--------------------------------------------------------------------------------------------*/
+
+/*---------------SIDEBAR CLASSES---------------*/
+
+#sidebar {
+    display:inline-block;
+    position:fixed;
+    padding-top:105px;
+    border: 1px solid #B2AFA9;
+    width:155px;
+    z-index:997;
+    background:white;
+    min-height:200px;
+	left:0px;
+}
+
+#archive, #filterbox {
+    margin:0 0 10px 5px;
+}
+
+#archive-title {
+    background:url("/static/image/sprites.png") no-repeat scroll -105px -22px transparent;
+    width:135px;
+    display:inline-block;
+}
+
+#tag-title {
+    background:url("/static/image/sprites.png") no-repeat scroll -163px -3px transparent;
+    width:105px;
+    display:inline-block;    
+}
+
+.subtitle {
+    font-size:14px;
+    font-weight:bold;
+}
+
+/*--------------------------------------------------------------------------------------------*/
+
+/*---------------MENU CLASSES---------------*/
 
 #menu {
     border-bottom:1px solid #B2AFA9;
@@ -11,41 +79,9 @@ body {
     background-color:white;
     width:100%;
     top:0px;
+	left:0px;
     height:100px;
-}
-
-.m-item {
-    height:20px;
-    display:inline-block;
-}
-
-#logo a {
-    background:url("/static/image/sprites.png") no-repeat scroll 0 -41px transparent;
-    height:50px;
-    width:320px;
-    display:inline-block;
-}
-
-#logo a:hover, #logo a:active, #logo a:hover {
-    background-position:0 -131px;
-}
-
-#logged-out {
-    padding-top:10px;
-}
-
-#container {
-    margin-top:100px;
-}
-
-#content {
-    width:1000px;
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.clear {
-    clear:both;
+    z-index:999;
 }
 
 #login-link a {
@@ -89,18 +125,60 @@ body {
     margin:5px 0 5px 5px;
 }
 
-.post {
-    margin-bottom:10px;
+.m-item {
+    height:20px;
     display:inline-block;
-    padding-bottom:15px;
-    border-bottom:1px solid #B2AFA9;
-    width:100%;
+}
+
+#logo a {
+    background:url("/static/image/sprites.png") no-repeat scroll 0 -41px transparent;
+    height:50px;
+    width:320px;
+    display:inline-block;
+}
+
+#logo a:hover, #logo a:active, #logo a:hover {
+    background-position:0 -131px;
+}
+
+/*--------------------------------------------------------------------------------------------*/
+
+/*---------------CONTENT CLASSES---------------*/
+
+#content {
+    width:74%;
+    margin-left:166px;
+    margin-right:auto;
+	overflow:visible;
+    /*padding-bottom:100px;*/
+    padding-top:100px;
+    height:80%;
+	min-height:300px;
+
+}
+
+#f-info {
+	padding: 5px 10px 5px;
+	border: 1px solid #B2AFA9;
+    display: inline-block;
+    left: -10px;
+    position: relative;
+	z-index:998;
+	background:white;
 }
 
 .title {
     font-size:20px;
-    margin:10px 0;
+    margin:5px 0 10px 0;
     height:20px;
+    display:inline-block;
+}
+
+.post {
+    display:inline-block;
+    padding-bottom:13px;
+    border-bottom:1px solid #B2AFA9;
+    width:100%;
 }
 
 .title a {
@@ -132,6 +210,7 @@ body {
 }
 
 .body-link a:hover, .body-link a:active, .body-link a:focus {
+
     color:#CF1919;
 }
 
@@ -139,8 +218,9 @@ body {
  
 }
 
-.p-body {
-
+.p-body p {
+    margin-top:0;
+    padding-top:7px;
 }
 
 .timg {
@@ -160,7 +240,21 @@ body {
 .pubdate {
 
 }
-
-#comment-drawer {
+    
+#drawer {
     display:none;
+}
+
+/*--------------------------------------------------------------------------------------------*/
+/*---------------FOOTER CLASSES ---------------*/
+
+#footer {
+    border-top:1px solid #B2AFA9;
+    position:fixed;
+    /*margin-top:-100px;*/
+    height:80px;
+    clear:both;
+    width:100%;
+	background-color:white;
+	padding-left:5px;
 }

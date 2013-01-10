@@ -77,6 +77,10 @@ class Post(models.Model):
 
     def preview(self):
         return unicode("%s" % (self.body[:500]))
+		
+    def tags_(self):
+        lst = [x[1] for x in self.tags.values_list()]
+        return str(join(lst, ', '))
 
 class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -91,15 +95,25 @@ class Comment(models.Model):
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ["name"]
+	
+class PhotoInline(admin.StackedInline):
+    model = Photo
+    extra = 5
 
 class PostAdmin(admin.ModelAdmin):
     search_fields = ["title"]
     display_fields = ["title"]
+    list_display = ["title", "created", "user", "tags_"]
+    list_filter = ["tags", "user"]
     exclude = ('user',)
-    def save_model(self, request, obj, form, change): 
+    ordering = ('-created',)
+    filter_horizontal = ('photos','tags',)
+    
+    def save_model(self, request, obj, form, change):
         if self.model == Post:
             obj.user = request.user
         obj.save()
+    
     def save_formset(self, request, form, formset, change): 
         if formset.model == Post:
             instances = formset.save(commit=False)
@@ -108,20 +122,23 @@ class PostAdmin(admin.ModelAdmin):
                 instance.save()
         else:
             formset.save()
-
+			
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["post", "author", "created"]
+    ordering = ('-created',)
 
 class PhotoAdmin(admin.ModelAdmin):
     exclude = ('user','thumb',)
     # search_fields = ["title"]
     list_display = ["__unicode__", "user", "size", "tags_",
         "thumbnail", "created"]
+    ordering = ('-created',)
     list_filter = ["tags", "user"]
+    
     def save_model(self, request, obj, form, change): 
         obj.user = request.user
         obj.save()
-
+		
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)

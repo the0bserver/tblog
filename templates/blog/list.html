@@ -1,20 +1,20 @@
 {% extends "blog/bbase.html" %}
-
-{% block sidebar %}
-    <style type="text/css">
-        #sidebar { float: right; border: 1px dotted #ccc; padding: 4px; }
-    </style>
-    <div id="sidebar">
-        Monthly Archive<br />
-        {% for month in months %}
-            {% ifchanged month.0 %} {{ month.0 }} <br /> {% endifchanged %}
-            <a class="body-link" href="{% url blog.views.month month.0 month.1 %}">{{ month.2 }}</a> <br />
-        {% endfor %}
-    </div>
-{% endblock %}
 {% block content %}
+ <script>
+	$(document).ready(function() {
+		$('#f-info').css('display','none');
+		$('#f-info').fadeIn('slow');
+	});
+ </script>
     <div id="main">
         <!-- Posts  -->
+			{% if f_tag %}
+				{% if posts.object_list.count > 1 %}
+					<div id="f-info">Showing {{ posts.object_list.count }} posts with tag '{{ f_tag }}'</div>
+				{% else %}
+					<div id="f-info">Showing {{ posts.object_list.count }} post with tag '{{ f_tag }}'</div>
+				{% endif %}
+			{% endif %}
             {% for post in posts.object_list %}
             <div class="post">
                 <div class="title"><a href="{% url blog.views.post post.pk %}">{{ post.title }}</a></div>
@@ -24,13 +24,15 @@
                     {% endwith %}
                 <div class="p-body"><p>{% if post.body|length > 500 %}{{ post.preview }}... <span class="body-link"><a href="{% url blog.views.post post.pk %}">continue reading ></a></span>{% else %}{{ post.body }}{% endif %}</p></div>
                     <div class="tags-comms">Tags: 
-                        {% if post.tags %}<span class="tags">
+                        {% if post.tags %}
+						<span class="tags">
                             {% with post.tags.all as tags %}
-                                {% for tag in tags %}<span class="body-link"><a href="{% url blog.views.tag_list tag.name %}">{{ tag }} </a></span>{% endfor %}</div>
+                                {% for tag in tags %}<span class="body-link"><a href="{% url blog.views.main tag.name %}">{{ tag }} </a></span>{% endfor %}
                             {% endwith %}
+						</span>
                         {% endif %}
                         <span class="body-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></span>
-                    </span>
+                    </div>
         </div>
                 <div class="clear"></div>
             {% endfor %}

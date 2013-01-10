@@ -16,9 +16,9 @@ urlpatterns = patterns('blog.views',
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    (r'^tag/(\S+)/$', 'tag_list'),
+    (r'^tag/(\S+)/$', 'main'),
     (r'^post/(\d+)/$', 'post'),
-    (r'^month/(\d+)/(\d+)/$', 'month'),
+    (r'^month/(\d+)/(\d+)/$', 'main'),
     (r'^add_comment/(\d+)/$', 'add_comment'),
     (r'^index', 'main'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

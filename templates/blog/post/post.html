@@ -1,30 +1,40 @@
 {% extends "blog/bbase.html" %}
 {% block content %}
-    <div class="main">
-        <!-- Post  -->
-        <div class="title">{{ post.title }}</div>
-        <div class="p-author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on     {{ post.created }}</div>
-        <div class="p-body">{{ post.body|linebreaks }}</div>
-        <div class="photos">
-        {% for photo in photos %}
-            <div class="thumb"><div class="timg"><a class="cbthumb" title="{{ photo.caption }}" href="{{ media_url }}{{ photo.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ photo.thumb.name }}" /></a></div>
-            <div class="caption">{{ photo.caption }}</div>
-            </div>
-        {% endfor %}
-         <script>
-            $(document).ready(function() {
-                $('.cbthumb').colorbox({rel:'cbthumb',  maxWidth: "95%", maxHeight:'95%'});
-                $('#add-comment').click(function () {
-                    $('#comment-drawer').toggle('slow'); })
-            });
-         </script>
-    </div>
+    <div id="main">
+        <!-- Individual Post  -->
+		<div class="post">
+			<div class="title">{{ post.title }}</div>
+			<div class="author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
+			<div class="p-body">{{ post.body|linebreaks }}</div>
+			<div class="tags-comms">Tags: 
+				{% if post.tags %}
+				<span class="tags">
+					{% with post.tags.all as tags %}
+						{% for tag in tags %}<span class="body-link"><a href="{% url blog.views.main tag.name %}">{{ tag }} </a></span>{% endfor %}
+					{% endwith %}
+				</span>
+				{% endif %}
+			</div>
+			<div class="photos">
+				{% for photo in photos %}
+					<div class="thumb"><div class="timg"><a class="cbthumb" title="{{ photo.caption }}" href="{{ media_url }}{{ photo.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ photo.thumb.name }}" /></a></div>
+					<div class="caption">{{ photo.caption }}</div>
+					</div>
+				{% endfor %}
+				 <script>
+					$(document).ready(function() {
+						$('.cbthumb').colorbox({rel:'cbthumb',  maxWidth: "95%", maxHeight:'95%'});
+						$('#add-comment').click(function () {
+							$('#drawer').toggle('slow'); })
+					});
+				 </script>
+			</div>
+		</div>
     <div class="clear"></div>
 <!-- Comments  -->
     {% if comments %}
          <p>Comments:</p>
     {% endif %}
-
     {% for comment in comments %}
         <div class="comment">
             <div class="c-header">On {{ comment.created }}, {{ comment.author }} said:</div>
@@ -32,16 +42,17 @@
         </div>
     {% endfor %}
 
-    <div><a id="add-comment" href="javascript:void(0);">Got something to say? Add a comment below...</a></div>
-    <div id="comment-drawer">
-    <!-- Comment form  -->
-    <form action="{% url blog.views.add_comment post.id %}" method="POST">
-        {% csrf_token %} 
-        <div id="cform">
-            Name: {{ form.author }}
-            Comment:<p>{{ form.body|linebreaks }}</p>
-        </div>
-        <div id="submit"><input type="submit" value="Submit Comment"></div>
-    </form>
+    <div class="body-link" ><a id="add-comment" href="javascript:void(0);">Got something to say? Add a comment below...</a></div>
+    <div id="drawer">
+		<!-- Comment form  -->
+		<form action="{% url blog.views.add_comment post.id %}" method="POST">
+			{% csrf_token %} 
+			<div id="cform">
+				Name: {{ form.author }}
+				Comment:<p>{{ form.body|linebreaks }}</p>
+			</div>
+			<div id="submit"><input type="submit" value="Submit Comment"></div>
+		</form>
     </div>
+	</div>
 {% endblock %}

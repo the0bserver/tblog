@@ -3,13 +3,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head> <title>{% block title %}Where in the World are Karlexandra?{% endblock %}</title> </head>
 {% load static from staticfiles %}
+<link rel="shortcut icon" href="{% static "image/k.ico" %}" type="image/x-icon" />
 <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}" />
 <link rel="stylesheet" type="text/css" href="{% static "css/colorbox/colorbox.css" %}" />
 <script type="text/javascript" src="{% static "script/jquery/jquery-1.8.3.js" %}"></script>
 <script type="text/javascript" src="{% static "script/jquery/colorbox-min.js" %}"></script>
+<script>
+	function setFooter() {
+		$("#footer").css("top", window.innerHeight-80+"px");
+	}
+	
+	$(document).ready(function() {
+		setFooter();
+		window.onresize = setFooter;
+	});
+</script>
 <body>
     <div id="container">
-    <div id="sidebar">{% block sidebar %} {% endblock %}</div>
         <div id="menu">
             {% block nav-global %}
                 <!-- MENU -->
@@ -18,20 +28,47 @@
                     <span class="m-item" id="admin-link"><a class="m-item" href="{% url admin:index %}"></a></span>
                     <span class="m-item" id="new-post-link"><a class="m-item" href="{% url admin:blog_post_add %}"></a></span>
                     <span class="m-item" id="new-photo-link"><a class="m-item" href="{% url admin:blog_photo_add %}"></a></span>
-                    <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!{% if user.is_staff %} You're an Admin. Noice.{% endif %}</span>
+                    <span id="user">Welcome, {%filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}!{% if user.is_staff %} You're an Admin. Noice. {% endif %}</span>
                 {% else %}
                     <span class="m-item" id="login-link"><a class="m-item" href="{% url admin:index %}"></a></span>
-                {% endif%}
+                    <span id="user">You're not logged in. </span>
+				{% endif%}
             {% endblock %}
         </div>
+		{% block sidebar %}
+			<div id="sidebar">
+			{% if user.is_authenticated %}
+				<div id="archive">
+					<div class="m-item" id="archive-title"></div>
+					{% for month in months %}
+						{% ifchanged month.0 %} <div>{{ month.0 }}</div> {% endifchanged %}
+						<div class="f-tag body-link"><a href="{% url blog.views.main month.0 month.1 %}">{{ month.2 }}</a></div>
+					{% endfor %}
+				</div>
+				<div id="filterbox">
+					<div class="m-item" id="tag-title"></div>
+					<div class="f-tag body-link"><a href="{% url blog.views.main %}">All Posts</a></div>
+					{% for tag in f_tags %}
+						<div class="f-tag body-link"><a href="{% url blog.views.main tag.name %}">{{ tag.name }}</a> ({{ tag.post_set.count }})</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+			</div>
+		{% endblock %}
         <div id="content">
             {% if user.is_authenticated %}
-                {% block content %}{% endblock %}
+                {% block content %} {% endblock %}
             {% else %}
                 <div id="logged-out"><h3>OH NAOOOO!</h3>
-                <p>As KarlexandrA is currently under construction, you need to be logged in to view content. User accounts are currently restricted until the site is launched. If you are one of the lucky few, please log into the admin interface above...</p></div>
+				<iframe width="420" height="315" src="http://www.youtube.com/embed/saC13RJ8CUs" frameborder="0" allowfullscreen></iframe>
+                <p>As KarlexandrA is currently under construction, you need to be logged in to view content. User accounts are currently restricted until the site is launched (that doesn't really matter though, as all content will initially be public anyway).</p>
+				<p>If you are one of the lucky few with a test account, please log into the admin interface above...</p></div>
             {% endif %}
         </div>
+    <div id="footer">
+        <div>Powered by Django!</div><div>Website proudly hosted by IPHH in Hamburg, Germany</div>
+        <div id="copyright">All content is copyright 2012 Karl Fischmann. Please do not reuse any content without express permission.</div>
     </div>
+   </div>
 </body>
 </html>
