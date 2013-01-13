@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from string import join
 import os
 from PIL import Image as PImage
-from mysite.settings import MEDIA_ROOT
+from mysite.settings import MEDIA_ROOT, MEDIA_URL
 from django.core.files import File
 from os.path import join as pjoin
 from tempfile import *
@@ -20,8 +20,8 @@ class Photo(models.Model):
     caption = models.CharField(max_length=100)
     tags = models.ManyToManyField(Tag, blank=True)
     user = models.ForeignKey(User)
-    image = models.ImageField(upload_to='media/images/%Y/%m/%d')
-    thumb = models.ImageField(upload_to='media/images/%Y/%m/%d', blank=True, null=True)
+    image = models.ImageField(upload_to='images/%Y/%m/%d')
+    thumb = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, null=True)
     # thumb2 = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -61,8 +61,8 @@ class Photo(models.Model):
         return str(join(lst, ', '))
 
     def thumbnail(self):
-        return """<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>""" % (
-                                                                    (self.image.name, self.image.name))
+        return """<a href="%s/%s"><img border="0" alt="" src="%s/%s" height="40" /></a>""" % (
+                                                                    (MEDIA_URL, self.image.name, MEDIA_URL, self.thumb.name))
     thumbnail.allow_tags = True
 
 class Post(models.Model):
@@ -76,7 +76,7 @@ class Post(models.Model):
         return self.title
 
     def preview(self):
-        return unicode("%s" % (self.body[:500]))
+        return unicode("%s..." % (self.body[:500]))
 		
     def tags_(self):
         lst = [x[1] for x in self.tags.values_list()]

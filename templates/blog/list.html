@@ -22,7 +22,7 @@
                     {% with post.photos.all|first as photo %}
                         <div class="thumb"><img src="{{ media_url }}{{ photo.thumb.name }}"></img></div>
                     {% endwith %}
-                <div class="p-body"><p>{% if post.body|length > 500 %}{{ post.preview }}... <span class="body-link"><a href="{% url blog.views.post post.pk %}">continue reading ></a></span>{% else %}{{ post.body }}{% endif %}</p></div>
+                <div class="p-body">{% if post.body|length > 500 %}{{ post.preview|linebreaks }}<div class="body-link comm-link"><a href="{% url blog.views.post post.pk %}">Continue reading ></a></div>{% else %}{{ post.body }}<div class="body-link comm-link"><a href="{% url blog.views.post post.pk %}">Continue reading ></a></div>{{% endif %}</div>
                     <div class="tags-comms">Tags: 
                         {% if post.tags %}
 						<span class="tags">
@@ -31,7 +31,7 @@
                             {% endwith %}
 						</span>
                         {% endif %}
-                        <span class="body-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></span>
+                        <div class="body-link"><a href="{% url blog.views.post post.pk %}">Comments ({{ post.comment_set.count }})</a></div>
                     </div>
         </div>
                 <div class="clear"></div>

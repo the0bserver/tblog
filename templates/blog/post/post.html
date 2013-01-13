@@ -4,7 +4,7 @@
         <!-- Individual Post  -->
 		<div class="post">
 			<div class="title">{{ post.title }}</div>
-			<div class="author">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
+			<div class="author under">Posted by {% filter force_escape %}{% firstof post.user.first_name post.user.username %}{% endfilter %} on {{ post.created }}</div>
 			<div class="p-body">{{ post.body|linebreaks }}</div>
 			<div class="tags-comms">Tags: 
 				{% if post.tags %}
@@ -25,7 +25,8 @@
 					$(document).ready(function() {
 						$('.cbthumb').colorbox({rel:'cbthumb',  maxWidth: "95%", maxHeight:'95%'});
 						$('#add-comment').click(function () {
-							$('#drawer').toggle('slow'); })
+							$('#drawer').toggle('slow');
+                            $('#add-comment').focus(); })
 					});
 				 </script>
 			</div>
@@ -42,14 +43,15 @@
         </div>
     {% endfor %}
 
-    <div class="body-link" ><a id="add-comment" href="javascript:void(0);">Got something to say? Add a comment below...</a></div>
+    <div id="com-div" class="body-link" ><a id="add-comment" href="#add-comment">Got something to say? Add a comment below...</a></div>
     <div id="drawer">
 		<!-- Comment form  -->
 		<form action="{% url blog.views.add_comment post.id %}" method="POST">
 			{% csrf_token %} 
 			<div id="cform">
-				Name: {{ form.author }}
-				Comment:<p>{{ form.body|linebreaks }}</p>
+				Name: {{ form.author }}<br />
+				Comment:
+                {{ form.body|linebreaks }}
 			</div>
 			<div id="submit"><input type="submit" value="Submit Comment"></div>
 		</form>

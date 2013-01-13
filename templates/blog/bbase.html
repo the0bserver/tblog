@@ -10,7 +10,7 @@
 <script type="text/javascript" src="{% static "script/jquery/colorbox-min.js" %}"></script>
 <script>
 	function setFooter() {
-		$("#footer").css("top", window.innerHeight-80+"px");
+		$("#footer").css("top", window.innerHeight-50+"px");
 	}
 	
 	$(document).ready(function() {
@@ -37,7 +37,7 @@
         </div>
 		{% block sidebar %}
 			<div id="sidebar">
-			{% if user.is_authenticated %}
+			{% if user %}
 				<div id="archive">
 					<div class="m-item" id="archive-title"></div>
 					{% for month in months %}
@@ -56,7 +56,7 @@
 			</div>
 		{% endblock %}
         <div id="content">
-            {% if user.is_authenticated %}
+            {% if user %}
                 {% block content %} {% endblock %}
             {% else %}
                 <div id="logged-out"><h3>OH NAOOOO!</h3>
@@ -66,8 +66,8 @@
             {% endif %}
         </div>
     <div id="footer">
-        <div>Powered by Django!</div><div>Website proudly hosted by IPHH in Hamburg, Germany</div>
-        <div id="copyright">All content is copyright 2012 Karl Fischmann. Please do not reuse any content without express permission.</div>
+        <div class="body-link">Powered by <a href="http://djangoproject.com">Django!</a></div><br />
+        <div id="copyright">All content &copy;2012 Karl Fischmann. Please do not reuse any content without express permission.</div>
     </div>
    </div>
 </body>

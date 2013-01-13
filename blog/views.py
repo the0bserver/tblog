@@ -58,8 +58,9 @@ def post(request, pk):
     """Single post with comments and a comment form."""
     post = Post.objects.get(pk=int(pk))
     photos = post.photos.all()
-    comments = Comment.objects.filter(post=post)
-    d = dict(post=post, comments=comments, form=CommentForm(), photos=photos, media_url=MEDIA_URL, user=request.user)
+    comments = Comment.objects.filter(post=post) 
+    tags = Tag.objects.all().annotate(num_posts=Count('post')).order_by('-num_posts')
+    d = dict(post=post, comments=comments, form=CommentForm(), photos=photos, f_tags=tags, media_url=MEDIA_URL, user=request.user)
     return render_to_response("blog/post/post.html", d, context_instance=RequestContext(request))
 
 def mkmonth_lst():
