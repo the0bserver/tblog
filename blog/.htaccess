@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Restricted area"
+AuthUserFile /root/dev/tblog/blog/.htpasswd
+require valid-user
